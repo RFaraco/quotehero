@@ -14,7 +14,7 @@ export default function QuotePreview({
   timeline,
 }: QuotePreviewProps) {
   return (
-    <main className="min-h-screen bg-[#3A1E68] flex items-center justify-center p-6">
+    <main className="min-h-screen bg-[#4D3E5C] flex items-center justify-center p-6">
 
       <div className="w-full max-w-4xl rounded-3xl bg-white shadow-2xl overflow-hidden">
 
