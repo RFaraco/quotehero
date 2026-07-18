@@ -49,12 +49,15 @@ Return ONLY valid JSON in this format:
       result: response.output_text,
     });
 
-  } catch (error) {
-    console.error(error);
+    } catch (error: any) {
+    console.error("OPENAI ERROR:", error);
 
     return NextResponse.json(
-      { error: "Failed to generate proposal." },
-      { status: 500 }
+        {
+        error: error?.message,
+        details: error,
+        },
+        { status: 500 }
     );
-  }
+    }
 }
