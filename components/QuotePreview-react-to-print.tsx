@@ -10,10 +10,8 @@ type QuotePreviewProps = {
   contractor: Contractor;
 };
 
-const QuotePreview = forwardRef<HTMLDivElement, QuotePreviewProps>(({
-  proposal,
-  contractor,
-}: QuotePreviewProps, ref) => {
+const QuotePreview = forwardRef<HTMLDivElement, QuotePreviewProps>(
+  ({ proposal, contractor }, ref) => {
 
   type EditableProposal = Omit<Proposal, "scope"> & {
     scope: string;
@@ -48,7 +46,7 @@ const QuotePreview = forwardRef<HTMLDivElement, QuotePreviewProps>(({
   <main className="min-h-screen bg-[#9B82FF] py-8 sm:py-10 lg:py-12">
 
     <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
-      <div
+<div
           ref={ref}
           className="overflow-hidden rounded-3xl bg-white shadow-2xl"
         >
@@ -232,7 +230,7 @@ const QuotePreview = forwardRef<HTMLDivElement, QuotePreviewProps>(({
                     })
                   }
                   rows={6}
-                  className="mt-4 w-full min-h-[160px] resize-none rounded-xl border border-transparent bg-white/5 p-4 text-base font-medium leading-6 text-white outline-none transition-all focus:border-yellow-400 focus:ring-2 focus:ring-yellow-300/30"                />
+                  className="mt-4 w-full min-h-[280px] resize-none rounded-xl border border-transparent bg-white/5 p-4 text-xl font-semibold leading-8 text-white outline-none transition-all focus:border-yellow-400 focus:ring-2 focus:ring-yellow-300/30"                />
               </div>
 
             </div>
@@ -349,9 +347,7 @@ const QuotePreview = forwardRef<HTMLDivElement, QuotePreviewProps>(({
     </div>
 
   </main>
-
- )
-
+  );
 });
 
 QuotePreview.displayName = "QuotePreview";

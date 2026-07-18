@@ -1,5 +1,5 @@
 "use client"; 
-import { forwardRef, useState } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
 import { Proposal, Contractor } from "@/types/proposal";
 
@@ -10,10 +10,10 @@ type QuotePreviewProps = {
   contractor: Contractor;
 };
 
-const QuotePreview = forwardRef<HTMLDivElement, QuotePreviewProps>(({
+export default function QuotePreview({
   proposal,
   contractor,
-}: QuotePreviewProps, ref) => {
+}: QuotePreviewProps) {
 
   type EditableProposal = Omit<Proposal, "scope"> & {
     scope: string;
@@ -23,6 +23,8 @@ const QuotePreview = forwardRef<HTMLDivElement, QuotePreviewProps>(({
     ...proposal,
     scope: proposal.scope.map(item => `- ${item}`).join("\n")
   });
+
+  const proposalRef = useRef<HTMLDivElement>(null);
   const today = new Date();
 
   const validUntil = new Date(today);
@@ -36,6 +38,33 @@ const QuotePreview = forwardRef<HTMLDivElement, QuotePreviewProps>(({
 
     });
 
+  const downloadPDF = async () => {
+    if (!proposalRef.current) return;
+
+    const html2pdf = (await import("html2pdf.js")).default;
+
+    html2pdf()
+      .set({
+        margin: 0.5,
+        filename: `Quote-${editedProposal.customerName}.pdf`,
+        image: {
+          type: "jpeg",
+          quality: 1,
+        },
+        html2canvas: {
+          scale: 2,
+          useCORS: true,
+        },
+        jsPDF: {
+          unit: "in",
+          format: "letter",
+          orientation: "portrait",
+        },
+      })
+      .from(proposalRef.current)
+      .save();
+  };
+
   const {
       customerName,
       projectSummary,
@@ -48,8 +77,18 @@ const QuotePreview = forwardRef<HTMLDivElement, QuotePreviewProps>(({
   <main className="min-h-screen bg-[#9B82FF] py-8 sm:py-10 lg:py-12">
 
     <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
-      <div
-          ref={ref}
+
+        <div className="mb-4 flex justify-end">
+          <button
+           onClick={downloadPDF}
+           className="rounded-lg bg-yellow-400 px-5 py-2 font-semibold hover:bg-yellow-300"
+         >
+           Download PDF
+         </button>
+       </div>
+
+        <div
+          ref={proposalRef}
           className="overflow-hidden rounded-3xl bg-white shadow-2xl"
         >
         {/* ========================= HEADER ========================= */}
@@ -232,7 +271,7 @@ const QuotePreview = forwardRef<HTMLDivElement, QuotePreviewProps>(({
                     })
                   }
                   rows={6}
-                  className="mt-4 w-full min-h-[160px] resize-none rounded-xl border border-transparent bg-white/5 p-4 text-base font-medium leading-6 text-white outline-none transition-all focus:border-yellow-400 focus:ring-2 focus:ring-yellow-300/30"                />
+                  className="mt-4 w-full min-h-[280px] resize-none rounded-xl border border-transparent bg-white/5 p-4 text-xl font-semibold leading-8 text-white outline-none transition-all focus:border-yellow-400 focus:ring-2 focus:ring-yellow-300/30"                />
               </div>
 
             </div>
@@ -349,11 +388,4 @@ const QuotePreview = forwardRef<HTMLDivElement, QuotePreviewProps>(({
     </div>
 
   </main>
-
- )
-
-});
-
-QuotePreview.displayName = "QuotePreview";
-
-export default QuotePreview;
+)}

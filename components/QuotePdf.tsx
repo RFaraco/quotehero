@@ -1,28 +1,20 @@
 "use client"; 
-import { forwardRef, useState } from "react";
+import { forwardRef } from "react";
 import Image from "next/image";
 import { Proposal, Contractor } from "@/types/proposal";
 
 
 
-type QuotePreviewProps = {
+type QuotePdfProps = {
   proposal: Proposal;
   contractor: Contractor;
 };
 
-const QuotePreview = forwardRef<HTMLDivElement, QuotePreviewProps>(({
+const QuotePdf = forwardRef<HTMLDivElement, QuotePdfProps>(({
   proposal,
   contractor,
-}: QuotePreviewProps, ref) => {
+}: QuotePdfProps, ref) => {
 
-  type EditableProposal = Omit<Proposal, "scope"> & {
-    scope: string;
-  };
-
-  const [editedProposal, setEditedProposal] = useState<EditableProposal>({
-    ...proposal,
-    scope: proposal.scope.map(item => `- ${item}`).join("\n")
-  });
   const today = new Date();
 
   const validUntil = new Date(today);
@@ -42,10 +34,11 @@ const QuotePreview = forwardRef<HTMLDivElement, QuotePreviewProps>(({
       scope,
       price,
       timeline,
-    } = editedProposal;
+    } = proposal;
 
   return (
-  <main className="min-h-screen bg-[#9B82FF] py-8 sm:py-10 lg:py-12">
+
+    <div ref={ref} className="bg-white">
 
     <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
       <div
@@ -129,17 +122,9 @@ const QuotePreview = forwardRef<HTMLDivElement, QuotePreviewProps>(({
               Prepared For
             </p>
 
-            <input
-              type="text"
-              value={editedProposal.customerName}
-              onChange={(e) =>
-                setEditedProposal({
-                  ...editedProposal,
-                  customerName: e.target.value,
-                })
-              }
-              className="mt-3 w-full bg-transparent text-4xl font-bold text-gray-900 outline-none border-b-2 border-transparent focus:border-yellow-400"
-            />
+            <div className="mt-3 text-4xl font-bold text-gray-900">
+            {customerName}
+            </div>
 
           </section>
 
@@ -151,17 +136,9 @@ const QuotePreview = forwardRef<HTMLDivElement, QuotePreviewProps>(({
               Project Summary
             </h3>
 
-            <textarea
-              value={editedProposal.projectSummary}
-              onChange={(e) =>
-                setEditedProposal({
-                  ...editedProposal,
-                  projectSummary: e.target.value,
-                })
-              }
-              rows={5}
-              className="mt-5 w-full resize-none rounded-xl border border-gray-200 bg-white p-4 text-base leading-7 text-gray-700 focus:border-yellow-400 focus:outline-none focus:ring-4 focus:ring-yellow-100"
-/>
+            <div className="whitespace-pre-wrap text-gray-700">
+                {projectSummary}
+            </div>
           </section>
 
           {/* SCOPE + INVESTMENT */}
@@ -176,23 +153,14 @@ const QuotePreview = forwardRef<HTMLDivElement, QuotePreviewProps>(({
               Scope of Work
             </h3>
 
-            <textarea
-              value={editedProposal.scope}
-              onChange={(e) =>
-                setEditedProposal({
-                  ...editedProposal,
-                  scope: e.target.value,
-                })
-              }
-              rows={12}
-              className="mt-8 w-full resize-none rounded-xl border border-gray-200 bg-gray-50 p-5 text-[17px] leading-8 text-gray-700 outline-none transition-all focus:border-yellow-400 focus:ring-4 focus:ring-yellow-100"
-              placeholder={`- Prepare all surfaces
-                            - Repair drywall where needed
-                            - Apply primer
-                            - Apply two coats of premium paint
-                            - Final cleanup`
-                          }
-            />
+            <ul className="mt-4 space-y-2">
+            {scope.map((item, index) => (
+                <li key={index} className="text-gray-700">
+                • {item}
+                </li>
+            ))}
+            </ul>
+
           </div>
                 {/* RIGHT */}
 
@@ -206,33 +174,18 @@ const QuotePreview = forwardRef<HTMLDivElement, QuotePreviewProps>(({
                 Fixed Price
               </p>
 
-              <input
-                type="text"
-                value={editedProposal.price}
-                onChange={(e) =>
-                  setEditedProposal({
-                    ...editedProposal,
-                    price: e.target.value,
-                  })
-                }
-                className="mt-5 w-full bg-transparent text-6xl font-bold text-white outline-none border-b-2 border-transparent focus:border-yellow-400"
-              />
+            <div className="mt-5 text-6xl font-bold text-white">
+            {price}
+            </div>
 
               <div className="mt-10 flex flex-col flex-1">
                 <h3 className="text-lg font-semibold text-white/80">
                   Estimated Timeline
                 </h3>
 
-                <textarea
-                  value={editedProposal.timeline}
-                  onChange={(e) =>
-                    setEditedProposal({
-                      ...editedProposal,
-                      timeline: e.target.value,
-                    })
-                  }
-                  rows={6}
-                  className="mt-4 w-full min-h-[160px] resize-none rounded-xl border border-transparent bg-white/5 p-4 text-base font-medium leading-6 text-white outline-none transition-all focus:border-yellow-400 focus:ring-2 focus:ring-yellow-300/30"                />
+                <div className="whitespace-pre-wrap text-purple-100">
+                    {timeline}
+                </div>
               </div>
 
             </div>
@@ -348,12 +301,12 @@ const QuotePreview = forwardRef<HTMLDivElement, QuotePreviewProps>(({
 
     </div>
 
-  </main>
+  </div>
 
  )
 
 });
 
-QuotePreview.displayName = "QuotePreview";
+QuotePdf.displayName = "QuotePdf";
 
-export default QuotePreview;
+export default QuotePdf;
