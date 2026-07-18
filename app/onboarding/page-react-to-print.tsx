@@ -5,14 +5,10 @@ import QuotePreview from "@/components/QuotePreview";
 import type { Proposal } from "@/types/proposal"; 
 import { useState, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
-import QuotePdf from "@/components/QuotePdf";
-import { LoaderCircle } from "lucide-react";
-
 
 export default function OnboardingPage() {
 
   const proposalRef = useRef<HTMLDivElement>(null);
-  const pdfRef = useRef<HTMLDivElement>(null);
 
 
   const [step, setStep] = useState(0);
@@ -116,7 +112,7 @@ const proposal: Proposal = {
 };
 
 const handlePrint = useReactToPrint({
-  contentRef: pdfRef,
+  contentRef: proposalRef,
   documentTitle: `Quote-${contractorName}`,
 });
 
@@ -144,17 +140,7 @@ if (step === 5 && generatedProposal) {
           proposal={generatedProposal ?? proposal}
           contractor={contractor}
         />
-
-        <div className="hidden">
-          <QuotePdf
-            ref={pdfRef}
-            proposal={generatedProposal ?? proposal}
-            contractor={contractor}
-          />
-        </div>
-        
       </div>
-
     </main>
   );
 }
@@ -164,12 +150,10 @@ if (step === 5 && generatedProposal) {
       <main className="min-h-screen bg-[#9B82FF] flex items-center justify-center p-6">
         <div className="bg-white rounded-3xl shadow-2xl p-12 text-center max-w-lg w-full">
 
-          <div className="flex justify-center mb-8">
-            <LoaderCircle
-              size={64}
-              className="animate-spin text-yellow-400"
-            />
+          <div className="text-6xl mb-6">
+            🤖
           </div>
+
           <h2 className="text-3xl font-bold">
             Generating your quote...
           </h2>
@@ -193,26 +177,8 @@ if (step === 5 && generatedProposal) {
 
 
   return (
-    <main className="min-h-screen bg-[#9B82FF] flex items-center justify-center px-6">
-      <div className="max-w-md w-full rounded-3xl bg-white p-10 shadow-2xl">
-
-        {step > 0 && step < 5 && (
-          <div className="mb-8">
-
-            <div className="flex justify-between text-sm text-gray-500 mb-2">
-              <span>Step {step} of 4</span>
-              <span>{step * 25}%</span>
-            </div>
-
-            <div className="h-2 rounded-full bg-gray-200">
-              <div
-                className="h-2 rounded-full bg-yellow-400 transition-all duration-500"
-                style={{ width: `${step * 25}%` }}
-              />
-            </div>
-
-          </div>
-        )}
+    <main className="min-h-screen bg-white flex items-center justify-center px-6">
+      <div className="max-w-xl w-full rounded-3xl bg-white p-10 shadow-2xl">
 
         {/* STEP 0 */}
 
@@ -229,7 +195,7 @@ if (step === 5 && generatedProposal) {
 
             <button
               onClick={() => setStep(1)}
-              className="mt-8 w-full rounded-xl bg-yellow-400 py-4 text-lg font-semibold text-gray-900 shadow-lg transition hover:bg-yellow-300"
+              className="mt-10 w-full rounded-xl bg-yellow-400 py-4 text-lg font-semibold hover:bg-yellow-500 transition"
             >
               Get Started
             </button>
@@ -242,8 +208,11 @@ if (step === 5 && generatedProposal) {
         {step === 1 && (
           <div>
 
+            <p className="text-sm font-semibold text-yellow-500">
+              STEP 1 OF 4
+            </p>
 
-            <h2 className="mt-2 text-3xl font-bold text-gray-900">
+            <h2 className="mt-2 text-3xl font-bold">
               Paste your customer's request
             </h2>
 
@@ -261,7 +230,7 @@ if (step === 5 && generatedProposal) {
             <button
               onClick={() => setStep(2)}
               disabled={!customerRequest}
-              className="mt-8 w-full rounded-xl bg-yellow-400 py-4 text-lg font-semibold text-gray-900 shadow-lg transition hover:bg-yellow-300"
+              className="mt-8 w-full rounded-xl bg-yellow-400 py-4 text-lg font-semibold disabled:opacity-40 hover:bg-yellow-500 transition"
             >
               Continue
             </button>
@@ -274,7 +243,11 @@ if (step === 5 && generatedProposal) {
         {step === 2 && (
           <div>
 
-            <h2 className="mt-2 text-3xl font-bold text-gray-900">
+            <p className="text-sm font-semibold text-yellow-500">
+              STEP 2 OF 4
+            </p>
+
+            <h2 className="mt-2 text-3xl font-bold">
               What kind of work is this quote for?
             </h2>
 
@@ -309,7 +282,7 @@ if (step === 5 && generatedProposal) {
             <button
               onClick={() => setStep(3)}
               disabled={!trade}
-              className="mt-8 w-full rounded-xl bg-yellow-400 py-4 text-lg font-semibold text-gray-900 shadow-lg transition hover:bg-yellow-300"
+              className="mt-8 w-full rounded-xl bg-yellow-400 py-4 text-lg font-semibold disabled:opacity-40 hover:bg-yellow-500 transition"
             >
               Continue
             </button>
@@ -322,7 +295,11 @@ if (step === 5 && generatedProposal) {
         {step === 3 && (
           <div>
 
-            <h2 className="mt-2 text-3xl font-bold text-gray-900">
+            <p className="text-sm font-semibold text-yellow-500">
+              STEP 3 OF 4
+            </p>
+
+            <h2 className="mt-2 text-3xl font-bold">
               How would you like to price this job?
             </h2>
 
@@ -395,7 +372,7 @@ if (step === 5 && generatedProposal) {
                 (pricingType === "hourly" &&
                   (!hourlyRate || !estimatedHours))
               }
-              className="mt-8 w-full rounded-xl bg-yellow-400 py-4 text-lg font-semibold text-gray-900 shadow-lg transition hover:bg-yellow-300"
+              className="mt-8 w-full rounded-xl bg-yellow-400 py-4 text-lg font-semibold disabled:opacity-40 hover:bg-yellow-500 transition"
             >
               Continue
             </button>
@@ -510,7 +487,7 @@ if (step === 5 && generatedProposal) {
                   setLoading(false);
                 }
               }}
-              className="mt-10 w-full rounded-xl bg-yellow-400 py-4 text-lg font-semibold text-gray-900 shadow-lg transition hover:bg-yellow-300"
+              className="mt-10 w-full rounded-xl bg-yellow-400 py-4 text-lg font-semibold hover:bg-yellow-500 transition"
               >
               Generate My Quote
             </button>
