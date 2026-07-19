@@ -181,7 +181,10 @@ const editedProposal = {
               onChange={(e) =>
                 setProposal({
                   ...proposal,
-                  scope: e.target.value,
+                  scope: e.target.value
+                .split("\n")
+                .map((line) => line.replace(/^-\s*/, "").trim())
+                .filter((line) => line.length > 0),
                 })
               }
               rows={8}

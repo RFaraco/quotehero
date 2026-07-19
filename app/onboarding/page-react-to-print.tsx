@@ -24,6 +24,7 @@ export default function OnboardingPage() {
   const [estimatedHours, setEstimatedHours] = useState("");
   const [loading, setLoading] = useState(false);
   const [generatedProposal, setGeneratedProposal] = useState<Proposal | null>(null);
+  const [editedProposal, setEditedProposal] = useState<Proposal | null>(null);
   
 
   const scopeTemplates: Record<string, string[]> = {
@@ -135,11 +136,12 @@ if (step === 5 && generatedProposal) {
           </button>
         </div>
 
-        <QuotePreview
-          ref={proposalRef}
-          proposal={generatedProposal ?? proposal}
-          contractor={contractor}
-        />
+      <QuotePreview
+        ref={proposalRef}
+        proposal={editedProposal ?? generatedProposal ?? proposal}
+        setProposal={setEditedProposal}
+        contractor={contractor}
+      />
       </div>
     </main>
   );

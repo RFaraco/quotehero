@@ -149,7 +149,7 @@ if (step === 5 && generatedProposal) {
         <div className="hidden">
           <QuotePdf
             ref={pdfRef}
-            proposal={generatedProposal ?? proposal}
+            proposal={editedProposal ?? generatedProposal ?? proposal}
             contractor={contractor}
           />
         </div>
