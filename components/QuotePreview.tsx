@@ -78,10 +78,10 @@ const editedProposal = {
 
             {/* RIGHT */}
 
-            <div className="w-full lg:w-[340px] rounded-2xl border border-gray-200 bg-gray-50 p-6">
+            <div className="w-full rounded-3xl border border-gray-200 bg-gray-50 p-6">
 
               <p className="text-xl font-bold text-gray-900">
-                Proposal #QH-000123
+                Proposal #QH-00000
               </p>
 
               <div className="mt-5 space-y-3">
@@ -145,7 +145,7 @@ const editedProposal = {
 
           {/* PROJECT SUMMARY */}
 
-          <section className="rounded-2xl border border-gray-200 bg-gray-50 p-5 md:p-8">
+          <section className="rounded-3xl border border-gray-200 bg-gray-50 p-5 md:p-8">
 
             <h3 className="text-xl font-semibold text-gray-900">
               Project Summary
@@ -170,7 +170,7 @@ const editedProposal = {
 
             {/* LEFT */}
 
-            <div className="lg:col-span-2 rounded-2xl border border-gray-200 bg-white p-5 md:p-8">
+            <div className="lg:col-span-2 rounded-3xl border border-gray-200 bg-white p-5 md:p-8 shadow-sm">
 
             <h3 className="text-xl font-semibold text-gray-900">
               Scope of Work
@@ -199,7 +199,7 @@ const editedProposal = {
           </div>
                 {/* RIGHT */}
 
-            <div className="rounded-2xl bg-[#4D3E5C] p-8 text-white shadow-lg flex flex-col">
+            <div className="rounded-3xl bg-[#4D3E5C] p-8 text-white shadow-lg flex flex-col">
 
               <p className="text-sm uppercase tracking-[0.25em] text-purple-200">
                 Investment
@@ -266,7 +266,7 @@ const editedProposal = {
 
               {/* ACCEPT PROPOSAL BADGE */}
 
-              <div className="mx-auto mt-10 max-w-md rounded-2xl border border-yellow-300 bg-yellow-400 p-6 shadow-xl">
+              <div className="mx-auto mt-10 max-w-md rounded-3xl border border-yellow-300 bg-yellow-400 p-6 shadow-xl">
 
                 <div className="flex items-center gap-5">
 
@@ -284,7 +284,7 @@ const editedProposal = {
                       Next Step
                     </p>
 
-                    <h3 className="text-2xl font-bold text-black">
+                    <h3 className="text-3xl font-bold leading-tight md:text-5xl">
                       Accept This Proposal
                     </h3>
 
@@ -322,7 +322,7 @@ const editedProposal = {
                     Phone
                   </p>
 
-                  <p className="mt-2 text-lg">
+                  <p className="mt-2 text-lg font-medium break-all">
                     {contractor.phone}
                   </p>
 
@@ -334,7 +334,7 @@ const editedProposal = {
                     Email
                   </p>
 
-                  <p className="mt-2 text-lg">
+                  <p className="mt-2 text-lg font-medium break-all">
                    {contractor.email}
                   </p>
 
