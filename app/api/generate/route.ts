@@ -55,17 +55,8 @@ Return ONLY valid JSON in this format:
       result: response.output_text,
     });
 
-    } catch (error: any) {
-    console.error("OPENAI ERROR:", error);
+    } catch (error) {
 
-    return NextResponse.json(
-        {
-        
-        message: error?.message,
-        code: error?.code,
-        type: error?.type,
-        },
-        { status: 500 }
-    );
+        return NextResponse.json(error, { status: 500 });
     }
 }

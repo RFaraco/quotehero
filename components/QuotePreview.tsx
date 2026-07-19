@@ -7,22 +7,22 @@ import { Proposal, Contractor } from "@/types/proposal";
 
 type QuotePreviewProps = {
   proposal: Proposal;
+  setProposal: React.Dispatch<React.SetStateAction<Proposal | null>>;
   contractor: Contractor;
 };
 
 const QuotePreview = forwardRef<HTMLDivElement, QuotePreviewProps>(({
   proposal,
+  setProposal,
   contractor,
 }: QuotePreviewProps, ref) => {
 
-  type EditableProposal = Omit<Proposal, "scope"> & {
-    scope: string;
-  };
-
-  const [editedProposal, setEditedProposal] = useState<EditableProposal>({
-    ...proposal,
-    scope: proposal.scope.map(item => `- ${item}`).join("\n")
-  });
+const editedProposal = {
+  ...proposal,
+  scope: Array.isArray(proposal.scope)
+    ? proposal.scope.map(item => `- ${item}`).join("\n")
+    : proposal.scope,
+};
   const today = new Date();
 
   const validUntil = new Date(today);
@@ -133,8 +133,8 @@ const QuotePreview = forwardRef<HTMLDivElement, QuotePreviewProps>(({
               type="text"
               value={editedProposal.customerName}
               onChange={(e) =>
-                setEditedProposal({
-                  ...editedProposal,
+                setProposal({
+                  ...proposal,
                   customerName: e.target.value,
                 })
               }
@@ -145,7 +145,7 @@ const QuotePreview = forwardRef<HTMLDivElement, QuotePreviewProps>(({
 
           {/* PROJECT SUMMARY */}
 
-          <section className="rounded-2xl border border-gray-200 bg-gray-50 p-8">
+          <section className="rounded-2xl border border-gray-200 bg-gray-50 p-5 md:p-8">
 
             <h3 className="text-xl font-semibold text-gray-900">
               Project Summary
@@ -154,23 +154,23 @@ const QuotePreview = forwardRef<HTMLDivElement, QuotePreviewProps>(({
             <textarea
               value={editedProposal.projectSummary}
               onChange={(e) =>
-                setEditedProposal({
-                  ...editedProposal,
+                setProposal({
+                  ...proposal,
                   projectSummary: e.target.value,
                 })
               }
-              rows={5}
-              className="mt-5 w-full resize-none rounded-xl border border-gray-200 bg-white p-4 text-base leading-7 text-gray-700 focus:border-yellow-400 focus:outline-none focus:ring-4 focus:ring-yellow-100"
-/>
+              rows={4}
+              className="mt-4 w-full resize-none rounded-xl border border-gray-200 bg-white p-4 text-base leading-6 md:leading-7 focus:border-yellow-400 focus:outline-none focus:ring-4 focus:ring-yellow-100"
+              />
           </section>
 
           {/* SCOPE + INVESTMENT */}
 
-          <section className="grid gap-8 lg:grid-cols-3">
+          <section className="grid gap-5 md:gap-8 lg:grid-cols-3">
 
             {/* LEFT */}
 
-          <div className="lg:col-span-2 rounded-2xl border border-gray-200 bg-white p-8">
+            <div className="lg:col-span-2 rounded-2xl border border-gray-200 bg-white p-5 md:p-8">
 
             <h3 className="text-xl font-semibold text-gray-900">
               Scope of Work
@@ -179,13 +179,13 @@ const QuotePreview = forwardRef<HTMLDivElement, QuotePreviewProps>(({
             <textarea
               value={editedProposal.scope}
               onChange={(e) =>
-                setEditedProposal({
-                  ...editedProposal,
+                setProposal({
+                  ...proposal,
                   scope: e.target.value,
                 })
               }
-              rows={12}
-              className="mt-8 w-full resize-none rounded-xl border border-gray-200 bg-gray-50 p-5 text-[17px] leading-8 text-gray-700 outline-none transition-all focus:border-yellow-400 focus:ring-4 focus:ring-yellow-100"
+              rows={8}
+              className="mt-4 md:mt-8 w-full resize-none rounded-xl border border-gray-200 bg-gray-50 p-4 md:p-5 text-base md:text-[17px] leading-6 md:leading-8 outline-none transition-all focus:border-yellow-400 focus:ring-4 focus:ring-yellow-100"
               placeholder={`- Prepare all surfaces
                             - Repair drywall where needed
                             - Apply primer
@@ -210,8 +210,8 @@ const QuotePreview = forwardRef<HTMLDivElement, QuotePreviewProps>(({
                 type="text"
                 value={editedProposal.price}
                 onChange={(e) =>
-                  setEditedProposal({
-                    ...editedProposal,
+                  setProposal({
+                    ...proposal,
                     price: e.target.value,
                   })
                 }
@@ -226,8 +226,8 @@ const QuotePreview = forwardRef<HTMLDivElement, QuotePreviewProps>(({
                 <textarea
                   value={editedProposal.timeline}
                   onChange={(e) =>
-                    setEditedProposal({
-                      ...editedProposal,
+                    setProposal({
+                      ...proposal,
                       timeline: e.target.value,
                     })
                   }

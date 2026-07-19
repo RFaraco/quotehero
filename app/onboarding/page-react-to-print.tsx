@@ -131,7 +131,7 @@ if (step === 5 && generatedProposal) {
             onClick={handlePrint}
             className="rounded-xl bg-yellow-400 px-6 py-3 font-semibold hover:bg-yellow-300"
           >
-            Download PDF
+            Edit & Download PDF
           </button>
         </div>
 

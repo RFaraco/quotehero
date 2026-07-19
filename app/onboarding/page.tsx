@@ -28,8 +28,8 @@ export default function OnboardingPage() {
   const [estimatedHours, setEstimatedHours] = useState("");
   const [loading, setLoading] = useState(false);
   const [generatedProposal, setGeneratedProposal] = useState<Proposal | null>(null);
+  const [editedProposal, setEditedProposal] = useState<Proposal | null>(null);
   
-
   const scopeTemplates: Record<string, string[]> = {
     Painter: [
       "Protect furniture and flooring",
@@ -135,13 +135,14 @@ if (step === 5 && generatedProposal) {
             onClick={handlePrint}
             className="rounded-xl bg-yellow-400 px-6 py-3 font-semibold hover:bg-yellow-300"
           >
-            Download PDF
+            Edit & Download PDF
           </button>
         </div>
 
         <QuotePreview
           ref={proposalRef}
-          proposal={generatedProposal ?? proposal}
+          proposal={editedProposal ?? generatedProposal ?? proposal}
+          setProposal={setEditedProposal}
           contractor={contractor}
         />
 
@@ -171,7 +172,7 @@ if (step === 5 && generatedProposal) {
             />
           </div>
           <h2 className="text-3xl font-bold">
-            Generating your quote...
+            Generating your proposal...
           </h2>
 
           <div className="mt-8 space-y-3 text-gray-600">
@@ -182,7 +183,7 @@ if (step === 5 && generatedProposal) {
 
             <p>✓ Writing professional proposal</p>
 
-            <p>✓ Preparing quote...</p>
+            <p>✓ Preparing proposal...</p>
 
           </div>
 
@@ -468,7 +469,7 @@ if (step === 5 && generatedProposal) {
                   // transforma o texto JSON retornado pelo GPT em objeto
                   const ai = JSON.parse(data.result);
 
-                  setGeneratedProposal({
+                  const proposal = {
                     customerName: "Customer",
 
                     projectSummary: ai.projectSummary,
@@ -481,7 +482,10 @@ if (step === 5 && generatedProposal) {
                         : `$${Number(hourlyRate) * Number(estimatedHours)}`,
 
                     timeline: ai.timeline,
-                  });
+                  };
+
+                  setGeneratedProposal(proposal);
+                  setEditedProposal(proposal);
 
                   const { data: leadData, error: leadError } = await supabase
                     .from("leads")
@@ -512,7 +516,7 @@ if (step === 5 && generatedProposal) {
               }}
               className="mt-10 w-full rounded-xl bg-yellow-400 py-4 text-lg font-semibold text-gray-900 shadow-lg transition hover:bg-yellow-300"
               >
-              Generate My Quote
+              Generate My Proposal
             </button>
 
           </div>

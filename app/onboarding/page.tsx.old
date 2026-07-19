@@ -165,7 +165,7 @@ if (step === 5 && generatedProposal) {
             </h1>
 
             <p className="mt-4 text-lg text-gray-600">
-              Let's generate your first professional quote.
+              Let's generate your first professional proposal.
             </p>
 
             <button
@@ -464,7 +464,7 @@ if (step === 5 && generatedProposal) {
               }}
               className="mt-10 w-full rounded-xl bg-yellow-400 py-4 text-lg font-semibold hover:bg-yellow-500 transition"
               >
-              Generate My Quote
+              Generate My Proposal
             </button>
 
           </div>
