@@ -41,9 +41,14 @@ Return ONLY valid JSON in this format:
 }
 `;
 
+    console.log("OPENAI KEY EXISTS:", !!process.env.OPENAI_API_KEY);
+    console.log("OPENAI KEY PREFIX:", process.env.OPENAI_API_KEY?.substring(0, 10));
+    console.log("OPENAI KEY LENGTH:", process.env.OPENAI_API_KEY?.length);
+
     const response = await openai.responses.create({
       model: "gpt-5",
       input: prompt,
+      
     });
 
     return NextResponse.json({
@@ -55,8 +60,10 @@ Return ONLY valid JSON in this format:
 
     return NextResponse.json(
         {
-        error: error?.message,
-        details: error,
+        
+        message: error?.message,
+        code: error?.code,
+        type: error?.type,
         },
         { status: 500 }
     );
