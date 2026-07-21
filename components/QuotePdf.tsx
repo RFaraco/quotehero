@@ -197,104 +197,46 @@ const QuotePdf = forwardRef<HTMLDivElement, QuotePdfProps>(({
 
           {/* ========================= NEXT STEP ========================= */}
 
-          <footer className="rounded-3xl bg-[#4D3E5C] p-10 text-white">
+        <footer className="rounded-3xl bg-[#4D3E5C] p-10 text-white">
 
-            <div className="mx-auto max-w-3xl text-center">
+        <div className="mx-auto max-w-3xl text-center">
 
-              <p className="text-sm font-semibold uppercase tracking-[0.35em] text-purple-200">
-                Next Step
-              </p>
+            <p className="text-sm font-semibold uppercase tracking-[0.35em] text-purple-200">
+            Thank You for the Opportunity
+            </p>
 
-              <h2 className="mt-4 text-4xl font-bold">
-                Ready to get started?
-              </h2>
+            <h2 className="mt-4 text-4xl font-bold">
+            We look forward to working with you.
+            </h2>
 
-              <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-purple-100">
-                We'd love the opportunity to complete your project.
-                If you're happy with this proposal, simply contact us to schedule your project.
-              </p>
+            <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-purple-100">
+            Thank you for considering us for your project.
+            <br />
+            If you have any questions or would like to discuss any aspect of this proposal,
+            please feel free to contact us.
+            </p>
 
-              {/* ACCEPT PROPOSAL BADGE */}
+            <div className="my-12 h-px bg-white/15" />
 
-              <div className="mx-auto mt-10 max-w-md rounded-2xl border border-yellow-300 bg-yellow-400 p-6 shadow-xl">
+            <div className="text-center">
 
-                <div className="flex items-center gap-5">
+            <p className="text-xs uppercase tracking-[0.25em] text-purple-200">
+                Prepared by
+            </p>
 
-                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white">
+            <h3 className="mt-3 text-2xl font-semibold">
+                {contractor.name}
+            </h3>
 
-                    <span className="text-3xl font-bold text-green-600">
-                      ✓
-                    </span>
-
-                  </div>
-
-                  <div className="text-left">
-
-                    <p className="text-xs font-bold uppercase tracking-[0.25em] text-gray-700">
-                      Next Step
-                    </p>
-
-                    <h3 className="text-2xl font-bold text-black">
-                      Accept This Proposal
-                    </h3>
-
-                    <p className="mt-1 text-sm text-gray-700">
-                      Contact us today to reserve your project.
-                    </p>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-              <div className="my-12 h-px bg-white/15" />
-
-              {/* CONTACT */}
-
-              <div className="grid gap-8 text-left sm:grid-cols-3">
-
-                <div>
-
-                  <p className="text-xs uppercase tracking-[0.25em] text-purple-200">
-                    Contractor
-                  </p>
-
-                  <p className="mt-2 text-lg font-semibold">
-                    {contractor.name}
-                  </p>
-
-                </div>
-
-                <div>
-
-                  <p className="text-xs uppercase tracking-[0.25em] text-purple-200">
-                    Phone
-                  </p>
-
-                  <p className="mt-2 text-lg">
-                    {contractor.phone}
-                  </p>
-
-                </div>
-
-                <div>
-
-                  <p className="text-xs uppercase tracking-[0.25em] text-purple-200">
-                    Email
-                  </p>
-
-                  <p className="mt-2 text-lg">
-                   {contractor.email}
-                  </p>
-
-                </div>
-
-              </div>
+            <p className="mt-2 text-purple-100">
+                {contractor.email}
+            </p>
 
             </div>
 
-          </footer>
+        </div>
+
+        </footer>
         </div>
 
       </div>

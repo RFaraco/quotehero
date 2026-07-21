@@ -2,6 +2,7 @@
 import { forwardRef, useState } from "react";
 import Image from "next/image";
 import { Proposal, Contractor } from "@/types/proposal";
+import { supabase } from "@/lib/supabase";
 
 
 
@@ -9,13 +10,19 @@ type QuotePreviewProps = {
   proposal: Proposal;
   setProposal: React.Dispatch<React.SetStateAction<Proposal | null>>;
   contractor: Contractor;
+  onDownloadPdf: () => void;   
+  leadId: number | null;
 };
 
 const QuotePreview = forwardRef<HTMLDivElement, QuotePreviewProps>(({
   proposal,
   setProposal,
   contractor,
+  onDownloadPdf,
+  leadId,
 }: QuotePreviewProps, ref) => {
+
+  console.log("QuotePreview leadId:", leadId);
 
 const editedProposal = {
   ...proposal,
@@ -43,6 +50,11 @@ const editedProposal = {
       price,
       timeline,
     } = editedProposal;
+
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+
+  const [savedTime, setSavedTime] = useState("");
+  const [wouldUseAgain, setWouldUseAgain] = useState("");
 
   return (
   <main className="min-h-screen bg-[#9B82FF] py-8 sm:py-10 lg:py-12">
@@ -252,51 +264,183 @@ const editedProposal = {
             <div className="mx-auto max-w-3xl text-center">
 
               <p className="text-sm font-semibold uppercase tracking-[0.35em] text-purple-200">
-                Next Step
+                Proposal Ready
               </p>
 
               <h2 className="mt-4 text-4xl font-bold">
-                Ready to get started?
+                Your proposal is ready.
               </h2>
 
               <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-purple-100">
-                We'd love the opportunity to complete your project.
-                If you're happy with this proposal, simply contact us to schedule your project.
+                Review your proposal one last time. When you're ready, download the PDF and send it to your customer.
               </p>
 
-              {/* ACCEPT PROPOSAL BADGE */}
+              <div className="mt-10">
 
-              <div className="mx-auto mt-10 max-w-md rounded-3xl border border-yellow-300 bg-yellow-400 p-6 shadow-xl">
+                
+                <button
+                  onClick={async () => {
+                    if (leadId) {
+                      const { error } = await supabase
+                        .from("leads")
+                        .update({
+                          pdf_downloaded: true,
+                          pdf_downloaded_at: new Date().toISOString(),
+                        })
+                        .eq("id", leadId);
 
-                <div className="flex items-center gap-5">
+                      if (error) {
+                        console.error(error);
+                      }
+                    }
 
-                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white">
+                    setShowFeedbackModal(true);
+                  }}
+                  className="inline-flex items-center justify-center rounded-2xl bg-yellow-400 px-10 py-5 text-lg font-bold text-gray-900 shadow-xl transition hover:-translate-y-1 hover:bg-yellow-300 hover:shadow-2xl"
+                >
+                  Download PDF
+                </button>
+              </div>
+              
+              {showFeedbackModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
 
-                    <span className="text-3xl font-bold text-green-600">
-                      ✓
-                    </span>
+                  <div className="w-full max-w-md rounded-2xl bg-white p-8 text-center shadow-lg">
 
-                  </div>
 
-                  <div className="text-left">
+                    <div className="mt-4 flex justify-center">
+                      <div className="h-10 w-10 animate-spin rounded-full border-4 border-yellow-400 border-t-transparent"></div>
+                    </div>
+                    
+                    <h2 className="mt-5 text-2xl font-bold text-gray-900">
+                      Generating your PDF...
+                    </h2>
 
-                    <p className="text-xs font-bold uppercase tracking-[0.25em] text-gray-700">
-                      Next Step
+                    <p className="mt-2 text-gray-600">
+                      Please answer two quick questions while we prepare your PDF.
                     </p>
 
-                    <h3 className="text-3xl font-bold leading-tight md:text-5xl">
-                      Accept This Proposal
-                    </h3>
+                    <div className="mt-8">
 
-                    <p className="mt-1 text-sm text-gray-700">
-                      Contact us today to reserve your project.
-                    </p>
+                      <p className="font-semibold text-gray-900">
+                        Did QuoteHero save you time?
+                      </p>
 
+                        <div className="mt-4 space-y-2 text-left text-gray-800">
+
+                          <label className="flex items-center gap-2 cursor-pointer">
+                            <input
+                              type="radio"
+                              name="savedTime"
+                              value="Yes"
+                              checked={savedTime === "Yes"}
+                              onChange={(e) => setSavedTime(e.target.value)}
+                            />
+                            Yes
+                          </label>
+
+                          <label className="flex items-center gap-2 cursor-pointer">
+                            <input
+                              type="radio"
+                              name="savedTime"
+                              value="A little"
+                              checked={savedTime === "A little"}
+                              onChange={(e) => setSavedTime(e.target.value)}
+                            />
+                            A little
+                          </label>
+
+                          <label className="flex items-center gap-2 cursor-pointer">
+                            <input
+                              type="radio"
+                              name="savedTime"
+                              value="No"
+                              checked={savedTime === "No"}
+                              onChange={(e) => setSavedTime(e.target.value)}
+                            />
+                            No
+                          </label>
+
+                        </div>
+
+                    </div>
+
+                    <div className="mt-8">
+
+                      <p className="font-semibold text-gray-900">
+                        Would you like Early Access with exclusive bonuses?
+                      </p>
+
+                      <div className="mt-4 space-y-2 text-left text-gray-800">
+
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="earlyAccess"
+                            value="Yes"
+                            checked={wouldUseAgain === "Yes"}
+                            onChange={(e) => setWouldUseAgain(e.target.value)}
+                          />
+                          Yes
+                        </label>
+
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="earlyAccess"
+                            value="Maybe"
+                            checked={wouldUseAgain === "Maybe"}
+                            onChange={(e) => setWouldUseAgain(e.target.value)}
+                          />
+                          Maybe
+                        </label>
+
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="earlyAccess"
+                            value="No"
+                            checked={wouldUseAgain === "No"}
+                            onChange={(e) => setWouldUseAgain(e.target.value)}
+                          />
+                          No
+                        </label>
+
+                      </div>
+                    </div>
+
+                    <button
+                      disabled={!savedTime || !wouldUseAgain}
+                      className="mt-10 w-full rounded-xl bg-yellow-400 p-4 font-semibold disabled:opacity-40"
+                      onClick={async () => {
+
+                        if (leadId) {
+
+                          const { error } = await supabase
+                            .from("leads")
+                            .update({
+                              saved_time: savedTime,
+                              early_access: wouldUseAgain,
+                            })
+                            .eq("id", leadId)
+                            .select();
+
+                            console.log("LeadId:", leadId);
+                            console.log("Error:", error);
+                        }
+
+                        setShowFeedbackModal(false);
+
+                        onDownloadPdf();
+
+                      }}
+                    >
+                      Continue & Download PDF
+                    </button>
                   </div>
 
                 </div>
-
-              </div>
+              )}
 
               <div className="my-12 h-px bg-white/15" />
 

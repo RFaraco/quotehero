@@ -14,6 +14,7 @@ export default function OnboardingPage() {
   const proposalRef = useRef<HTMLDivElement>(null);
   const pdfRef = useRef<HTMLDivElement>(null);
 
+  const [leadId, setLeadId] = useState<number | null>(null);
 
   const [step, setStep] = useState(0);
 
@@ -29,6 +30,10 @@ export default function OnboardingPage() {
   const [loading, setLoading] = useState(false);
   const [generatedProposal, setGeneratedProposal] = useState<Proposal | null>(null);
   const [editedProposal, setEditedProposal] = useState<Proposal | null>(null);
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+
+  const [savedTime, setSavedTime] = useState("");
+  const [wouldUseAgain, setWouldUseAgain] = useState("");
   
   const scopeTemplates: Record<string, string[]> = {
     Painter: [
@@ -130,20 +135,14 @@ if (step === 5 && generatedProposal) {
   return (
     <main className="min-h-screen bg-[#9B82FF] py-8">
       <div className="mx-auto max-w-6xl px-6">
-        <div className="mb-6 flex justify-end">
-          <button
-            onClick={handlePrint}
-            className="rounded-xl bg-yellow-400 px-6 py-3 font-semibold hover:bg-yellow-300"
-          >
-            Edit & Download PDF
-          </button>
-        </div>
 
         <QuotePreview
           ref={proposalRef}
           proposal={editedProposal ?? generatedProposal ?? proposal}
           setProposal={setEditedProposal}
           contractor={contractor}
+          onDownloadPdf={handlePrint}
+          leadId={leadId}
         />
 
         <div className="hidden">
@@ -245,11 +244,11 @@ if (step === 5 && generatedProposal) {
 
 
             <h2 className="mt-2 text-3xl font-bold text-gray-900">
-              Paste your customer's request
+              Enter the customer's request
             </h2>
 
             <p className="mt-3 text-gray-600">
-              Copy and paste the customer's message.
+              Describe the work the customer needs.
             </p>
 
             <textarea
@@ -501,10 +500,14 @@ if (step === 5 && generatedProposal) {
                       proposal_generated: true,
                       ai_model: "gpt-5",
                       app_version: "MVP-1",
-                    });
-
+                    })
+                    .select()
+                    .single();
                   console.log("LEAD:", leadData);
                   console.log("ERROR:", leadError);
+                  if (leadData) {
+                      setLeadId(leadData.id);
+                  }
 
                   setLoading(false);
                   setStep(5);

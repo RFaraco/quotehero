@@ -56,7 +56,13 @@ Return ONLY valid JSON in this format:
     });
 
     } catch (error) {
+        console.error("OPENAI ERROR:", error);
 
-        return NextResponse.json(error, { status: 500 });
+        return NextResponse.json(
+        {
+            error: error instanceof Error ? error.message : String(error),
+        },
+        { status: 500 }
+        );
     }
 }
